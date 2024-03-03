@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-and-push-task
+spec:
+  steps:
+  - name: build-and-push
+    image: gcr.io/kaniko-project/executor:v1.6.0
+    env:
+    - name: DOCKER_CONFIG
+      value: /tekton/home/.docker
+    - name: Docker_username
+      valueFrom:
+        secretKeyRef:
+          name: dockerhub-credentials
+          key: username
+    - name: DOCKER_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: dockerhub-credentials
+          key: password
+    - name: DOCKER_EMAIL
+      valueFrom:
+        secretKeyRef:
+          name: dockerhub-credentials
+          key: email
+    - name: DOCKER_REPO
+      value: dr3amk8ller/openflights:latest
+    - name: CONTEXT
+      value: /workspace/source
+    - name: DESTINATION
+      value: dr3amk8ller/openglights:latest
+    workingDir: /workspace/source
+

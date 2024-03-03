@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails-app
+  template:
+    metadata:
+      labels:
+        app: rails-app
+    spec:
+      containers:
+      - name: rails-app
+        image: dr3amk8ller/openflights:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: SECRET_KEY_BASE
+          value: "99cae9424f8ebfa54c3bf11871a348613a309593d0ea5cf0cf396dc7c9a0f91104c67956fc7320b9853eaf82a11e5d45787d0d60fcd4a8325c68f2c8cf7323d4"
+        - name: RAILS_ENV
+          value: production
+        - name: DATABASE_URL
+          value: postgresql://postgres@postgresql/openflights_development
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rails-app
+spec:
+  selector:
+    app: rails-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 32170
+  type: NodePort
+

@@ -1,5 +1,4 @@
-# PostgreSQL. Versions 9.1 and up are supported.
-#
+# PostgreSQL. Versions 9.1 and up are s:
 # Install the pg driver:
 #   gem install pg
 # On OS X with Homebrew:
@@ -23,7 +22,10 @@ default: &default
 
 development:
   <<: *default
-  database: open-flights_development
+  database: openflights_development
+  username: postgres
+  password: postgres
+  host: postgresql
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
